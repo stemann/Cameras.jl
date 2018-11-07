@@ -1,0 +1,4 @@
+name = "Cameras"
+uuid = "a3f77020-e286-11e8-192c-2d14e9f48747"
+authors = ["IHP Systems R&D <research@ihp.dk>"]
+version = "0.1.0"
