@@ -1,14 +1,22 @@
 module Cameras
 
+import Base: take!
+
 export Camera,
     isrunning,
     start!,
-    stop!
+    stop!,
+    take!
 
 abstract type Camera end
 
 isrunning(camera::Camera) = error("No implementation for $(typeof(camera))")
 start!(camera::Camera) = error("No implementation for $(typeof(camera))")
 stop!(camera::Camera) = error("No implementation for $(typeof(camera))")
+take!(camera::Camera) = error("No implementation for $(typeof(camera))")
+
+import Base: iterate
+export iterate
+include("iteration.jl")
 
 end # module
