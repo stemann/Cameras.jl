@@ -15,8 +15,9 @@ start!(camera::Camera) = error("No implementation for $(typeof(camera))")
 stop!(camera::Camera) = error("No implementation for $(typeof(camera))")
 take!(camera::Camera) = error("No implementation for $(typeof(camera))")
 
-import Base: iterate
-export iterate
+import Base: iterate, IteratorSize
+export iterate,
+    IteratorSize
 include("iteration.jl")
 
 end # module

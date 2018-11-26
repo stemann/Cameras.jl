@@ -9,3 +9,5 @@ function iterate(camera::Camera, state=nothing)
         end
     end
 end
+
+IteratorSize(camera::Camera) = Base.IsInfinite()
