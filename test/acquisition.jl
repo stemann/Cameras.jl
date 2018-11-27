@@ -34,4 +34,29 @@ using Test
             end
         end
     end
+
+    @testset "Continuously triggered" begin
+        period = 0.04 # seconds
+
+        function produce_triggers!(trigger_source::Channel)
+            while true
+                put!(trigger_source, nothing)
+                sleep(period)
+            end
+        end
+        trigger_source = Channel(produce_triggers!)
+
+        continuous_camera = SimulatedCamera(trigger_source, image_source)
+
+        start!(continuous_camera)
+
+        let i = 0
+            while i < 5
+                i += 1
+                img = take!(continuous_camera)
+                @assert size(img) == image_size
+            end
+            @test i == 5
+        end
+    end
 end
