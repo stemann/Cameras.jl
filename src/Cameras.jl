@@ -6,7 +6,8 @@ export Camera,
     isrunning,
     start!,
     stop!,
-    take!
+    take!,
+    trigger!
 
 abstract type Camera end
 
@@ -37,6 +38,13 @@ stop!(camera::Camera) = error("No implementation for $(typeof(camera))")
 Take an image, i.e. an [`AbstractArray`](@ref). Blocks until an image is available.
 """
 take!(camera::Camera) = error("No implementation for $(typeof(camera))")
+
+"""
+    trigger!(camera::Camera)
+
+Trigger image acquisition.
+"""
+trigger!(camera::Camera) = error("No implementation for $(typeof(camera))")
 
 import Base: iterate, IteratorSize
 export iterate,
