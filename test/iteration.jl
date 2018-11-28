@@ -5,14 +5,6 @@ using Test
     period = 0.04 # seconds
     image_size = (2, 2)
 
-    function produce_triggers!(trigger_source::Channel)
-        while true
-            sleep(period)
-            put!(trigger_source, nothing)
-        end
-    end
-    trigger_source = Channel(produce_triggers!)
-
     function produce_images!(image_source::Channel)
         while true
             put!(image_source, zeros(image_size))
@@ -20,7 +12,7 @@ using Test
     end
     image_source = Channel(produce_images!)
 
-    camera = SimulatedCamera(trigger_source, image_source)
+    camera = SimulatedCamera(period, image_source)
 
     start!(camera)
 
