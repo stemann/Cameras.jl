@@ -51,4 +51,7 @@ export iterate,
     IteratorSize
 include("iteration.jl")
 
+export SimulatedCamera
+include("simulated_camera.jl")
+
 end # module
