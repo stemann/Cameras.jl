@@ -3,6 +3,9 @@ uuid = "6410b9bd-72f2-532f-9386-433801972073"
 authors = ["IHP Systems R&D <research@ihp.dk>"]
 version = "0.1.0"
 
+[deps]
+ResourcePools = "16787047-0d73-522e-b8c7-4a818d739b35"
+
 [extras]
 Test = "8dfed614-e22c-5e08-85e1-65c5234f0b40"
 
