@@ -2,11 +2,11 @@ abstract type AcquiredImage{T,N} <: AbstractPooledArray{T,N}
 end
 
 """
-    image_number(image::AcquiredImage)
+    id(image::AcquiredImage)
 
-Return image number.
+Return image ID.
 """
-image_number(image::AcquiredImage) = error("No implementation for $(typeof(image))")
+id(image::AcquiredImage) = error("No implementation for $(typeof(image))")
 
 """
     timestamp(image::AcquiredImage)

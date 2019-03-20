@@ -4,8 +4,18 @@ using ResourcePools
 
 import Base: take!
 
+import ResourcePools:
+    ref_count,
+    release!,
+    resource,
+    retain!
+
 export Camera,
     isrunning,
+    ref_count,
+    release!,
+    resource,
+    retain!,
     start!,
     stop!,
     take!,
@@ -49,7 +59,7 @@ Trigger image acquisition.
 trigger!(camera::Camera) = error("No implementation for $(typeof(camera))")
 
 export AcquiredImage,
-    image_number,
+    id,
     timestamp
 include("acquired_image.jl")
 
@@ -58,7 +68,8 @@ export iterate,
     IteratorSize
 include("iteration.jl")
 
-export SimulatedCamera
+export SimulatedCamera,
+    SimulatedAcquiredImage
 include("simulated_camera.jl")
 
 end # module
