@@ -19,15 +19,15 @@ mutable struct SimulatedCamera <: Camera
 end
 
 mutable struct SimulatedAcquiredImage{T,N} <: AcquiredImage{T,N}
-    # Inherits behaviour of AbstractPooledArray, by having the same fields
-    array::AbstractArray{T,N}
+    # Inherits behaviour of AbstractPooledDenseArray, by having the same fields
+    array::Array{T,N}
     ref_count::Int
     dispose::Function
 
     is_disposed::Bool
     id::Int
     timestamp::Int
-    function SimulatedAcquiredImage(a::AbstractArray{T,N}, id, timestamp) where {T,N}
+    function SimulatedAcquiredImage(a::Array{T,N}, id, timestamp) where {T,N}
         function dispose(img)
             @debug "Disposing $img"
             img.is_disposed = true

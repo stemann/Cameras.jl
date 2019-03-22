@@ -1,4 +1,4 @@
-abstract type AcquiredImage{T,N} <: AbstractPooledArray{T,N}
+abstract type AcquiredImage{T,N} <: AbstractPooledDenseArray{T,N}
 end
 
 """
