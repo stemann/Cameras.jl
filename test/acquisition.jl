@@ -40,7 +40,7 @@ using Test
 
         function produce_triggers!(trigger_source::Channel)
             while true
-                put!(trigger_source, nothing)
+                put!(trigger_source, time_ns())
                 sleep(period)
             end
         end

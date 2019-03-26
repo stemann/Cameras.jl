@@ -3,18 +3,17 @@ mutable struct SimulatedCamera <: Camera
     trigger_source::Channel
     image_source::Channel
     next_id::Int
-    next_timestamp::Int
     SimulatedCamera(image_source::Channel) = new(false, Channel(Inf), image_source)
     SimulatedCamera(trigger_source::Channel, image_source::Channel) = new(false, trigger_source, image_source)
     function SimulatedCamera(trigger_period::Real, image_source::Channel)
         function produce_triggers!(trigger_source::Channel)
             while true
                 sleep(trigger_period)
-                put!(trigger_source, nothing)
+                put!(trigger_source, time_ns())
             end
         end
         trigger_source = Channel(produce_triggers!)
-        new(false, trigger_source, image_source, 0, 0)
+        new(false, trigger_source, image_source, 0)
     end
 end
 
@@ -52,11 +51,10 @@ end
 function take!(camera::SimulatedCamera)
     image = take!(camera.image_source)
     id = camera.next_id += 1
-    timestamp = camera.next_timestamp += 1000
-    take!(camera.trigger_source)
+    timestamp = take!(camera.trigger_source)
     return SimulatedAcquiredImage(image, id, timestamp)
 end
 
 function trigger!(camera::SimulatedCamera)
-    put!(camera.trigger_source, nothing)
+    put!(camera.trigger_source, time_ns())
 end

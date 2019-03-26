@@ -13,6 +13,7 @@ using Test
 
     camera = SimulatedCamera(image_source)
 
+    t_1 = time_ns()
     trigger!(camera)
     img = take!(camera)
     @test typeof(img) <: AcquiredImage
@@ -31,10 +32,11 @@ using Test
     @test img.is_disposed
 
     @test id(img) == 1
-    @test timestamp(img) == 1000
+    @test timestamp(img) >= t_1
 
+    t_2 = time_ns()
     trigger!(camera)
     img = take!(camera)
     @test id(img) == 2
-    @test timestamp(img) == 2000
+    @test timestamp(img) >= t_2
 end
