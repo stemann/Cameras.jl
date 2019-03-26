@@ -1,9 +1,21 @@
 module Cameras
 
+using ResourcePools
+
 import Base: take!
+
+import ResourcePools:
+    ref_count,
+    release!,
+    resource,
+    retain!
 
 export Camera,
     isrunning,
+    ref_count,
+    release!,
+    resource,
+    retain!,
     start!,
     stop!,
     take!,
@@ -35,9 +47,9 @@ stop!(camera::Camera) = error("No implementation for $(typeof(camera))")
 """
     take!(camera::Camera)
 
-Take an image, i.e. an [`AbstractArray`](@ref). Blocks until an image is available.
+Take an image, i.e. an [`AcquiredImage`](@ref). Blocks until an image is available.
 """
-take!(camera::Camera) = error("No implementation for $(typeof(camera))")
+take!(camera::Camera)::AcquiredImage = error("No implementation for $(typeof(camera))")
 
 """
     trigger!(camera::Camera)
@@ -46,12 +58,18 @@ Trigger image acquisition.
 """
 trigger!(camera::Camera) = error("No implementation for $(typeof(camera))")
 
+export AcquiredImage,
+    id,
+    timestamp
+include("acquired_image.jl")
+
 import Base: iterate, IteratorSize
 export iterate,
     IteratorSize
 include("iteration.jl")
 
-export SimulatedCamera
+export SimulatedCamera,
+    SimulatedAcquiredImage
 include("simulated_camera.jl")
 
 end # module
