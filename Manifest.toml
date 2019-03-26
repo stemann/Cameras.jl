@@ -42,7 +42,7 @@ uuid = "9a3f8284-a2c9-5f02-9a11-845980a1fd5c"
 [[ResourcePools]]
 deps = ["DataStructures"]
 git-tree-sha1 = "89d6f505dd0bf8dea6dcc20ca4f630fa63a6b797"
-repo-rev = "feature/pooled_resource"
+repo-rev = "b481eb351adeb84e354ae6863af767ff6e11ce80"
 repo-url = "https://github.com/IHPSystems/ResourcePools.jl"
 uuid = "16787047-0d73-522e-b8c7-4a818d739b35"
 version = "0.1.0"
