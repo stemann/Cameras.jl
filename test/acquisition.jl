@@ -14,6 +14,10 @@ using Test
     @testset "Manually triggered" begin
         camera = SimulatedCamera(image_source)
 
+        @test !isopen(camera)
+        open!(camera)
+        @test isopen(camera)
+
         @test !isrunning(camera)
         start!(camera)
         @test isrunning(camera)
@@ -33,18 +37,26 @@ using Test
                 @test size(img) == image_size
             end
         end
+
+        @assert isrunning(camera)
+        stop!(camera)
+        @test !isrunning(camera)
+
+        @assert isopen(camera)
+        close!(camera)
+        @test !isopen(camera)
     end
 
     @testset "Continuously triggered" begin
         period = 0.04 # seconds
 
-        function produce_triggers!(trigger_source::Channel)
+        function produce_triggers!(trigger_source::Channel{UInt64})
             while true
                 put!(trigger_source, time_ns())
                 sleep(period)
             end
         end
-        trigger_source = Channel(produce_triggers!)
+        trigger_source = Channel(produce_triggers!; ctype = UInt64)
 
         continuous_camera = SimulatedCamera(trigger_source, image_source)
 

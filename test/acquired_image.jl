@@ -16,7 +16,7 @@ using Test
     t_1 = time_ns()
     trigger!(camera)
     img = take!(camera)
-    @test typeof(img) <: AcquiredImage
+    @test typeof(img) <: AbstractAcquiredImage
     @assert size(img) == image_size
 
     @test ref_count(img) == 1
@@ -26,10 +26,6 @@ using Test
 
     release!(img)
     @test ref_count(img) == 1
-
-    @assert !img.is_disposed
-    release!(img)
-    @test img.is_disposed
 
     @test id(img) == 1
     @test timestamp(img) >= t_1
