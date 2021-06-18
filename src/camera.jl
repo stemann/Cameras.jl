@@ -46,6 +46,8 @@ stop!(camera::Camera) = error("No implementation for $(typeof(camera))")
     take!(camera::Camera)
 
 Take an image, i.e. an [`AbstractAcquiredImage`](@ref). Blocks until an image is available.
+
+Throws [`InvalidStateException`](@ref) if/when camera is stopped.
 """
 take!(camera::Camera)::AbstractAcquiredImage = error("No implementation for $(typeof(camera))")
 

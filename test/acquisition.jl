@@ -9,9 +9,9 @@ using Test
             put!(image_source, zeros(image_size))
         end
     end
-    image_source = Channel(produce_images!)
 
     @testset "Manually triggered" begin
+        image_source = Channel(produce_images!)
         camera = SimulatedCamera(image_source)
 
         @test !isopen(camera)
@@ -57,6 +57,7 @@ using Test
             end
         end
         trigger_source = Channel(produce_triggers!; ctype = UInt64)
+        image_source = Channel(produce_images!)
 
         continuous_camera = SimulatedCamera(trigger_source, image_source)
 
@@ -69,6 +70,40 @@ using Test
                 @assert size(img) == image_size
             end
             @test i == 5
+        end
+
+        @testset "Stopping camera terminates acquisition task" begin
+            acquisition_task_started = Condition()
+            acquisition_task_terminated = Condition()
+            acquisition_task = @task begin
+                notify(acquisition_task_started)
+                try
+                    while true
+                        take!(continuous_camera)
+                    end
+                finally
+                    notify(acquisition_task_terminated)
+                end
+            end
+            schedule(acquisition_task)
+            wait(acquisition_task_started)
+            @assert istaskstarted(acquisition_task)
+
+            @assert isrunning(continuous_camera)
+            stop!(continuous_camera)
+            @test !isrunning(continuous_camera)
+            @test !isopen(trigger_source)
+            @test !isopen(image_source)
+
+            wait(acquisition_task_terminated)
+            @test istaskdone(acquisition_task)
+            @static if VERSION >= v"1.3"
+                @test_throws TaskFailedException wait(acquisition_task)
+                (e, _) = first(Base.catch_stack(acquisition_task))
+                @test e isa InvalidStateException
+            else
+                @test_throws InvalidStateException wait(acquisition_task)
+            end
         end
     end
 end

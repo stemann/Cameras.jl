@@ -24,7 +24,12 @@ close!(camera::SimulatedCamera) = camera.isopen = false
 
 isrunning(camera::SimulatedCamera) = camera.isrunning
 start!(camera::SimulatedCamera) = camera.isrunning = true
-stop!(camera::SimulatedCamera) = camera.isrunning = false
+
+function stop!(camera::SimulatedCamera)
+    close(camera.image_source)
+    close(camera.trigger_source)
+    camera.isrunning = false
+end
 
 function take!(camera::SimulatedCamera)
     @debug "Taking image from $(camera.image_source)"
