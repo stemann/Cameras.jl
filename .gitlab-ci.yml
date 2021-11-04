@@ -1,11 +1,16 @@
 include:
   - project: 'ihp/julia/julia-gitlab-ci-templates'
-    ref: v1.0.0
+    ref: v1.1.0
     file: '/.gitlab-ci_template.yaml'
 
 test:1.0:
   extends:
     - .julia:1.0
+    - .julia.test.basic
+
+test:1.3:
+  extends:
+    - .julia:1.3
     - .julia.test.basic
 
 test:1.6:
